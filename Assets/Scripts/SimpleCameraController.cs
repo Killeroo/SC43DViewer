@@ -70,6 +70,8 @@ public class SimpleCameraController : MonoBehaviour
     [Tooltip("Whether or not to invert our Y axis for mouse input to rotation.")]
     public bool invertY = false;
 
+    public GameObject CharacterPrefab;
+
     void OnEnable()
     {
         m_TargetCameraState.SetFromTransform(transform);
@@ -117,6 +119,17 @@ public class SimpleCameraController : MonoBehaviour
 #endif
         }
 
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, Mathf.Infinity);
+            if (hit.collider != null && CharacterPrefab != null)
+            {
+                
+                Quaternion Quat = Quaternion.Euler(new Vector3(0, 90, 0));
+                Instantiate(CharacterPrefab, hit.point, Quaternion.AngleAxis(90f, Vector3.up));
+            }
+        }
+        
         // Hide and lock cursor when right mouse button pressed
         if (Input.GetMouseButtonDown(1))
         {
